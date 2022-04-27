@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Counter</title>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>
+
+<script>
+  var count = localStorage.getItem("counterValue") || 0;
+
+  var incBtn = document.createElement("button");
+  incBtn.innerText = "Increase";
+  incBtn.addEventListener("click", () => {
+    event.preventDefault();
+    count++;
+    shwCount.innerText = count;
+    localStorage.setItem("counterValue", count);
+  });
+  var decBtn = document.createElement("button");
+  decBtn.innerText = "Decrease";
+  decBtn.addEventListener("click", () => {
+    event.preventDefault();
+    count--;
+    shwCount.innerHTML = count;
+    localStorage.setItem("counterValue", count);
+  });
+  var shwCount = document.createElement("h1");
+  shwCount.innerText = count;
+  app.append(shwCount, incBtn, decBtn);
+</script>
