@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SIGNUP AND LOGIN USING LS</title>
+    <style>
+      * {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        user-select: none;
+      }
+      #container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 2%;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        width: min-content;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+        padding: 20px;
+        border-radius: 7px;
+      }
+      form * {
+        margin: 7px;
+      }
+      form input,
+      form button {
+        outline: none;
+        padding: 10px;
+        border-radius: 7px;
+        border: none;
+        box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
+          rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+      }
+      form button:hover {
+        box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px,
+          rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+      }
+      #page {
+        margin-top: 20px;
+        border: none;
+        padding: 10px;
+        border-radius: 7px;
+        background-color: royalblue;
+        font-weight: bold;
+        color: white;
+      }
+      #page:hover {
+        cursor: pointer;
+        background-color: rgb(12, 61, 209);
+      }
+      #clear {
+        margin-top: 20px;
+        border: none;
+        padding: 10px;
+        border-radius: 7px;
+        background-color: rgb(180, 0, 0);
+        font-weight: bold;
+        color: white;
+        visibility: hidden;
+      }
+      #clear:hover {
+        cursor: pointer;
+        background-color: rgb(255, 0, 0);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <h1 id="title">Sign Up</h1>
+      <form id="form">
+        <p>Email</p>
+        <input
+          id="email"
+          type="email"
+          placeholder="Enter your email address"
+          required
+        />
+        <p id="numberP">Number</p>
+        <input
+          id="number"
+          type="number"
+          placeholder="Enter your number"
+          required
+        />
+        <p>Password</p>
+        <input
+          id="password"
+          type="password"
+          placeholder="Enter your password"
+          required
+        />
+        <button id="submitBtn" type="submit">SIGNUP</button>
+      </form>
+      <button id="page">Sign In</button>
+      <button id="clear">Logout/Delete Data</button>
+    </div>
+  </body>
+</html>
+
+<script>
+  let signUp = true;
+  let isWorking = false;
+  const users = localStorage.getItem("users");
+
+  const usersData = JSON.parse(users) || [];
+  const signFun = () => {
+    event.preventDefault();
+
+    if (signUp) {
+      const email = document.getElementById("email").value;
+      const number = document.getElementById("number").value;
+
+      const password = document.getElementById("password").value;
+
+      const user = {
+        email: email,
+        number: number,
+        password: password,
+      };
+      usersData.push(user);
+      localStorage.setItem("users", JSON.stringify(usersData));
+      form.style.display = "none";
+      title.innerText = "Sign Up Successful Please Sign In Now";
+    } else {
+      usersData.forEach((el) => {
+        if (email.value == el.email) {
+          isWorking = true;
+        }
+      });
+    }
+    if (isWorking) {
+      form.style.display = "none";
+      title.innerText =
+        "Yay! Sign In Successful Please Logout Now or Refresh to Add More Users";
+      alert("Yay! Sign In Successful Please Logout Now");
+      page.remove();
+      clear.style.visibility = "inherit";
+      clear.addEventListener("click", () => {
+        localStorage.clear();
+        clear.innerText = "Done";
+        clear.style.backgroundColor = "blue";
+        window.location.reload();
+      });
+    } else {
+      alert("Sign Up Complete");
+      //   window.location.reload()
+    }
+  };
+
+  form.addEventListener("submit", signFun);
+
+  page.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    if (signUp) {
+      form.style.display = "block";
+      title.innerText = "Sign In";
+      number.style.display = "none";
+      number.setAttribute("disabled", true);
+
+      numberP.style.display = "none";
+      submitBtn.innerText = "Sign In";
+      page.innerText = "Sign Up";
+      signUp = false;
+    } else {
+      title.innerText = "Sign Up";
+      number.style.display = "block";
+      number.removeAttribute("disabled");
+      numberP.style.display = "block";
+      submitBtn.innerText = "Sign Up";
+      page.innerText = "Sign In";
+      signUp = true;
+    }
+  });
+</script>
